@@ -69,3 +69,29 @@ int main() {
 
     return 0;
 }
+// per-symbol aggregation
+map<string, double> sym_vwap_num;
+map<string, double> sym_volume;
+map<string, double> sym_spread;
+map<string, int> sym_count;
+
+auto sym_start = chrono::high_resolution_clock::now();
+
+for (const Trade& t : trades) {
+    sym_vwap_num[t.symbol] += t.price * t.volume;
+    sym_volume[t.symbol] += t.volume;
+    sym_spread[t.symbol] += (t.ask - t.bid);
+    sym_count[t.symbol]++;
+}
+
+auto sym_end = chrono::high_resolution_clock::now();
+long long sym_micros = chrono::duration_cast<chrono::microseconds>(sym_end - sym_start).count();
+
+cout << "\nPer-Symbol Aggregation:\n";
+for (auto& kv : sym_vwap_num) {
+    string sym = kv.first;
+    double vwap = kv.second / sym_volume[sym];
+    double avg_sp = sym_spread[sym] / sym_count[sym];
+    cout << sym << " | VWAP: " << vwap << " | Avg Spread: " << avg_sp << " | Records: " << sym_count[sym] << "\n";
+}
+cout << "Aggregation latency: " << sym_micros << " microseconds\n";
