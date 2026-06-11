@@ -8,7 +8,7 @@ Parses NSE tick data, computes financial metrics, and benchmarks throughput usin
 - Computes VWAP (Volume Weighted Average Price) and average bid-ask spread per symbol
 - Benchmarks parse throughput and latency using `std::chrono::high_resolution_clock`
 
-## Metrics (Apple M-series, -O2 optimization)
+## Metrics (-O2 optimization)
 - Records parsed: 100,000
 - Throughput: 2,269,426 records/sec
 - Total parse latency: 44ms
